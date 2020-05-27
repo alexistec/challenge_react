@@ -3,7 +3,7 @@ import {Button} from '@material-ui/core';
 import {Formik,Form,Field} from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import { MyField } from '../../../components/MyField';
+import { MyField } from '../../components/MyField';
 import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,11 +24,11 @@ interface Values{
     date : string;
 }
 
-interface Props {
+interface IProps {
     onSubmit : (values:Values) => void
 };
 
-export const FormTransacctions: React.FC<Props> = ({onSubmit}) => {
+export const FormTransactions: React.FC<Props> = ({onSubmit}) => {
     const classes = useStyles();
     return (
         <Container component="main" maxWidth="xs">
@@ -61,4 +61,4 @@ export const FormTransacctions: React.FC<Props> = ({onSubmit}) => {
 }
 
 
-export default FormTransacctions;
+export default FormTransactions;

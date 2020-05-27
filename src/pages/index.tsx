@@ -2,18 +2,15 @@ import React ,{useState} from 'react';
 import {NextPage,GetStaticProps} from 'next';
 import axios  from 'axios';
 import Router from 'next/router';
-import ListTransction from '../../components/ListTransacction';
+import ListTransaction from '../components/ListTransaction';
+import ModalDialog from '../components/Dialog';
 import {
     Card,
     Button,
     CardHeader,
 } from '@material-ui/core';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 interface Props{
     transactions:[],
@@ -33,7 +30,6 @@ const Index: NextPage<Props> = (props) => {
     const handleClose = () => {
         setOpen(false);
         setIdTransaction('');
-        Router.push('/');
     }
 
     const handleDelete = () =>{
@@ -42,6 +38,7 @@ const Index: NextPage<Props> = (props) => {
             headers: { "Content-Type": "application/json" }
         })
         .then((res) => {
+            Router.push('/');
             handleClose();
         })
         .catch(err=>{
@@ -60,46 +57,31 @@ const Index: NextPage<Props> = (props) => {
                             variant="outlined"
                             href="/transactions/new"
                         >
-                            New transacction
+                            New transaction
                         </Button>
                     }
                     title="Historial transacction"
                 />
             </Card>
-            <ListTransction 
+            <ListTransaction 
                 item={props.transactions} 
                 action={deleteTransactions}
             />
-            {/*ESto aun componente aparte*/}
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"Message"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                       Are you sure you want to delete?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button  color="primary" onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button color="secondary" autoFocus  onClick={handleDelete}>
-                        Yes, sure
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <ModalDialog
+                message={idTransaction}
+                openModal={open}
+                onConfirm={handleDelete}
+                handlerClose={handleClose}
+            />
         </div>
     );
 };
 
 
 const fetchData = async ()=> {
-    const respuesta = await axios.get('http://localhost:3000/api/transactions',{headers:{'Content-Type':'application/json'}});
-    const transactions =  await respuesta.data;
+    const response = await axios.get('http://localhost:3000/api/transactions',
+                                    {headers:{'Content-Type':'application/json'}});
+    const transactions =  await response.data;
     return transactions;
     
 }
