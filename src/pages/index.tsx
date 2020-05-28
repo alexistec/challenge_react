@@ -15,6 +15,7 @@ import {
 interface Props{
     transactions:[],
     deleteTransactions : () => void
+    refreshPage : ()=>void
 }
 
 const Index: NextPage<Props> = (props) => {
@@ -38,12 +39,16 @@ const Index: NextPage<Props> = (props) => {
             headers: { "Content-Type": "application/json" }
         })
         .then((res) => {
-            Router.push('/');
+            refreshPage();
             handleClose();
         })
         .catch(err=>{
             console.error('err', err)
         })  
+    }
+
+    const refreshPage = () => {
+        Router.push('/');
     }
 
     return (
@@ -60,7 +65,18 @@ const Index: NextPage<Props> = (props) => {
                             New transaction
                         </Button>
                     }
-                    title="Historial transacction"
+                    title="Transaction history"
+                />
+                <CardHeader
+                    action={
+                        <Button
+                            size="small"
+                            variant="contained"
+                            onClick={refreshPage}
+                        >
+                            REFRESH
+                        </Button>
+                    }
                 />
             </Card>
             <ListTransaction 
@@ -68,7 +84,7 @@ const Index: NextPage<Props> = (props) => {
                 action={deleteTransactions}
             />
             <ModalDialog
-                message={idTransaction}
+                message={`Are you sure you want to delete the transaction ${idTransaction} ?`}
                 openModal={open}
                 onConfirm={handleDelete}
                 handlerClose={handleClose}
@@ -82,8 +98,9 @@ const fetchData = async ()=> {
     const response = await axios.get('http://localhost:3000/api/transactions',
                                     {headers:{'Content-Type':'application/json'}});
     const transactions =  await response.data;
-    return transactions;
-    
+
+    const sortDate = transactions.sort((a,b) => new Date(b.date) - new Date(a.date));
+    return sortDate;
 }
 
 export const getStaticProps : GetStaticProps<Props>  = async (context)=>{

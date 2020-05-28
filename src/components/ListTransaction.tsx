@@ -32,7 +32,8 @@ const SimpleTable = ({ item,action}: Transaction) =>{
         <TableHead>
           <TableRow>
             <TableCell><strong>ID</strong></TableCell>
-            <TableCell><strong>DATE</strong></TableCell>
+            <TableCell><strong>Date</strong></TableCell>
+            <TableCell><strong>Type</strong></TableCell>
             <TableCell><strong>Description</strong></TableCell>
             <TableCell><strong>$ Amount</strong></TableCell>
             <TableCell><strong>Action</strong></TableCell>
@@ -43,6 +44,12 @@ const SimpleTable = ({ item,action}: Transaction) =>{
               <TableRow key={row.id}>
                   <TableCell>{row.id}</TableCell>
                   <TableCell>{row.date}</TableCell>
+                  <TableCell>
+                    {row.amount > 0 ? 
+                      <strong style={{color:'green'}}>Credit</strong> 
+                      : 
+                      <strong style={{color:'red'}}>Debit</strong>}
+                  </TableCell>
                   <TableCell>{row.description}</TableCell>
                   <TableCell>
                     {row.amount > 0 ? 
