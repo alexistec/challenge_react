@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 
 interface Transaction {
   item:[],
-  action: (id:string)=> void
+  action: (rows:Object)=> void
 };
 
 const SimpleTable = ({ item,action}: Transaction) =>{
@@ -31,7 +31,6 @@ const SimpleTable = ({ item,action}: Transaction) =>{
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell><strong>ID</strong></TableCell>
             <TableCell><strong>Date</strong></TableCell>
             <TableCell><strong>Type</strong></TableCell>
             <TableCell><strong>Description</strong></TableCell>
@@ -42,7 +41,6 @@ const SimpleTable = ({ item,action}: Transaction) =>{
         <TableBody>
             {item.map((row) => (
               <TableRow key={row.id}>
-                  <TableCell>{row.id}</TableCell>
                   <TableCell>{row.date}</TableCell>
                   <TableCell>
                     {row.amount > 0 ? 
@@ -57,7 +55,7 @@ const SimpleTable = ({ item,action}: Transaction) =>{
                       : 
                       <strong style={{color:'red'}}>{row.amount}</strong>}
                   </TableCell>
-                  <TableCell><Button color="secondary" onClick={()=> action(row.id)}>X</Button></TableCell>
+                  <TableCell><Button color="secondary" onClick={()=> action(row)}>X</Button></TableCell>
               </TableRow>
             ))}
         </TableBody>

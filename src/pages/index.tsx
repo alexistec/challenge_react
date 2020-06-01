@@ -22,10 +22,12 @@ const Index: NextPage<Props> = (props) => {
     //console.log(props);
     const [open,setOpen] = useState(false);
     const [idTransaction,setIdTransaction]  = useState('');
+    const [description,setDescription]  = useState('');
     
-    const deleteTransactions = (id:string) => {
+    const deleteTransactions = ({id,description}) => {
         setOpen(true);
-        setIdTransaction(id)
+        setIdTransaction(id);
+        setDescription(description);
     }
 
     const handleClose = () => {
@@ -84,7 +86,7 @@ const Index: NextPage<Props> = (props) => {
                 action={deleteTransactions}
             />
             <ModalDialog
-                message={`Are you sure you want to delete the transaction ${idTransaction} ?`}
+                message={`Are you sure you want to delete the transaction ${description} ?`}
                 openModal={open}
                 onConfirm={handleDelete}
                 handlerClose={handleClose}
